@@ -64,3 +64,19 @@ If you shut off Eureka server all of the information of who is who goes away, ev
 * Eureka First Bootstrap: Use Eureka to expose location to config server.
  * Config server is just another client.
  * Client makes two network trips to obtain configuration.
+
+## Spring Cloud Ribbon - Load Balancer
+
+* Client side load balancer.
+* Traditional load balancers are server-side components that distribute the incoming traffic among several servers.
+
+(*Application load balancer*) HTTP, TCP, UDP traffic **--->** LOAD BALANCER **--->** [{Application A}, {Application B}, {Application C}]
+
+* Usually uses some algorithm like Round Robin and doesn't do any processing.
+* A client-side LB selects which server to call.
+
+Application (**LB**) **--->** [{Server A LB}, {Server B LB}, {Server C LB}] (*Client-side load balancer*)
+
+With this approach closes, fastest response is found in same region, outage forces call to nearby region.
+
+* Ribbon automatically integrates with Eureka service discovery.
