@@ -35,3 +35,32 @@ spring:
  *What if the config server is down?*
  
  Spring Cloud Server should tipically run on several instances. Config Server settings override local settings (provide local fallback settings).
+ 
+ ## Spring Cloud Eureka - Service Discovery
+ 
+ Service Discovery provides a single "lookup" service. Clientes register themselves to discover other registrants. Solutions include Eureka, Consul, Zookeper.
+ 
+ **Eureka** provides a "lookup" server.
+  * Multiple copies
+  * Copies replicate state of registered services
+  
+* Client servers send heartbeats to Eureka, Eureka removes services without heartbeats.
+* Eureka is made to run on multiple Eureka servers, otherwise you will get many warnings in the log.
+
+```
+SERVERS:
+ @EnableEurekaServer
+ 
+CLIENTS:
+ @EnableDiscoveryClient
+```
+
+Eureka server is designed for **multiple instance** use, that's why standalone node will actually warn you when it runs without any peers.
+If you shut off Eureka server all of the information of who is who goes away, everything is always on memory.
+
+**Which comes first?**
+
+* Config First Bootstrap: Use Config Server to configure location of Eureka server.
+* Eureka First Bootstrap: Use Eureka to expose location to config server.
+ * Config server is just another client.
+ * Client makes two network trips to obtain configuration.
